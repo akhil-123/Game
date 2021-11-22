@@ -86,7 +86,7 @@ function checkAnswer(currentLevel) {
     }, 200);
     $("h1").text("Game Over, Press Any Key Or Click On Restart Button");
     console.log("wrong");
-    localStorage.setItem('level', Math.max(localStorage.getItem('level'), level));
+    localStorage.setItem('level', Math.max(localStorage.getItem('level'), level-1));
     startOver();
     $("button").text("Restart");
     $("button").removeClass("restart");
