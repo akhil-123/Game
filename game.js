@@ -7,8 +7,26 @@ var gameStarted = false;
 
 var level = 0;
 
+
+if (!localStorage.getItem('level')) {
+  populateStorage();
+}
+
+function populateStorage() {
+  localStorage.setItem('level', 0);
+}
+
+$("button").click(function() {
+  if (gameStarted === false) {
+    $("button").addClass("restart");
+    nextSequence();
+    gameStarted = true;
+  }
+});
+
 $(document).keydown(function() {
   if (gameStarted === false) {
+    $("button").addClass("restart");
     nextSequence();
     gameStarted = true;
   }
@@ -16,7 +34,7 @@ $(document).keydown(function() {
 
 
 function nextSequence() {
-  userClickedPattern=[];
+  userClickedPattern = [];
   $("h1").text("Level " + level);
   level += 1;
   var randomNumber = Math.floor(Math.random() * 4);
@@ -33,7 +51,7 @@ $(".btn").click(function(event) {
   userClickedPattern.push(userChosenColour);
   playSound(userChosenColour);
   animatePress(userChosenColour);
-  checkAnswer(userClickedPattern.length-1);
+  checkAnswer(userClickedPattern.length - 1);
 })
 
 function playSound(color) {
@@ -65,10 +83,15 @@ function checkAnswer(currentLevel) {
     $("body").addClass("game-over");
     setTimeout(function() {
       $("body").removeClass("game-over");
-    },200);
-    $("h1").text("Game Over, Press Any Key to Restart");
+    }, 200);
+    $("h1").text("Game Over, Press Any Key Or Click On Restart Button");
     console.log("wrong");
+    localStorage.setItem('level', Math.max(localStorage.getItem('level'), level));
     startOver();
+    $("button").text("Restart");
+    $("button").removeClass("restart");
+    swal("Your high score is " + localStorage.getItem('level'));
+    console.log(localStorage.getItem('level'));
   }
 }
 
